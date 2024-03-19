@@ -1,0 +1,84 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+model User {
+  id          String       @id @default(uuid())
+  username    String
+  picture     String
+  email       String       @unique
+  password    String
+  createdAt   DateTime     @default(now())
+  lastLoginAt DateTime?
+  account     Account[]
+  Collection  Collection[]
+  Favorites   Favorites?
+}
+
+model Category {
+  id                String              @id @default(uuid())
+  name              String
+  icon              String
+  AcctCatCollection AcctCatCollection[]
+}
+
+model Account {
+  id                String              @id @default(uuid())
+  user_id           String
+  icon              String
+  credential        String
+  password          String
+  User              User                @relation(fields: [user_id], references: [id] , onDelete:Cascade )
+  AcctCatCollection AcctCatCollection[]
+  CollectionAcct    CollectionAcct[]
+  FavoritesAcc      FavoritesAcc[]
+}
+
+model AcctCatCollection {
+  id          String   @id @default(uuid())
+  account_id  String
+  category_id String
+  account     Account  @relation(fields: [account_id], references: [id])
+  category    Category @relation(fields: [category_id], references: [id])
+
+  @@unique([account_id, category_id])
+}
+
+model Collection {
+  id             String           @id @default(uuid())
+  user_id        String
+  name           String
+  icon           String
+  CollectionAcct CollectionAcct[]
+  User           User?            @relation(fields: [user_id], references: [id] , onDelete: Cascade)
+}
+
+model CollectionAcct {
+  id            String     @id @default(uuid())
+  account_id    String
+  collection_id String
+  Collection    Collection @relation(fields: [collection_id], references: [id])
+  Account       Account    @relation(fields: [account_id], references: [id])
+
+  @@unique([account_id, collection_id])
+}
+
+model Favorites {
+  id           String         @id @default(uuid())
+  user_id      String         @unique
+  User         User           @relation(fields: [user_id], references: [id] , onDelete: Cascade)
+  FavoritesAcc FavoritesAcc[]
+}
+
+model FavoritesAcc {
+  id           String     @id @default(uuid())
+  favorites_id String
+  account_id   String
+  Favorites    Favorites? @relation(fields: [favorites_id], references: [id])
+  Account      Account?   @relation(fields: [account_id], references: [id])
+  @@unique([favorites_id, account_id])
+}
