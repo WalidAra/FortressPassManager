@@ -15,6 +15,22 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+
+      colors: {
+        default: "3f3f46",
+        primary: "#0070f0",
+        secondary: "#9455d3",
+        success: "#18c964",
+        warning: "#f5a524",
+        danger: "#f31260",
+
+        // light theme
+        whiteBoard: "#fafafa",
+        hLight: "#303032",
+        pLight: "#8d8d8d",
+        pLight2: "#808494",
+        divider: "#d6ddeb",
+      },
     },
   },
   darkMode: "class",

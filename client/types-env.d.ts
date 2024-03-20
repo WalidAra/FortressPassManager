@@ -11,7 +11,7 @@ type HTTPResponse = {
 type HTTPResponseWithToken = {
   status: boolean;
   message: string;
-  data: UserResponse | any;
+  data: UserResponse ;
   accessToken: string;
 };
 
