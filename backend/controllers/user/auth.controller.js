@@ -101,7 +101,8 @@ const Auth = {
         return res.status(200).json({
           status: true,
           message: "User authorized successfully",
-          data: { ...userWithoutPassword, token },
+          data: userWithoutPassword,
+          accessToken: token,
         });
       } else {
         return res.status(403).json({
@@ -131,7 +132,8 @@ const Auth = {
       res.status(201).json({
         status: true,
         message: "User created successfully",
-        data: { ...userWithoutPassword, token },
+        data: userWithoutPassword,
+        accessToken: token,
       });
     } catch (error) {
       console.error(
