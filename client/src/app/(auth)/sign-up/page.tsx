@@ -30,29 +30,29 @@ const Register = () => {
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const dispatch = useDispatch();
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     const email = emailRef.current?.value;
     const password = passwordRef.current?.value;
     const username = usernameRef.current?.value;
 
-    const response = api.public.register({ email, password, username });
-    response.then((res) => {
-      if (res.status) {
-        dispatch(setProfile({ isUser: res.status, user: res.data }));
-        if (isChecked) {
-          jsCookie.set("fortress-token", res.accessToken, {
-            expires: 2,
-            path: "/",
-          });
-        }
-        router.push("/");
+    const response = await api.public.register({ email, password, username });
+    if (response.status) {
+      dispatch(setProfile({ isUser: response.status, user: response.data }));
+      if (isChecked) {
+        jsCookie.set("fortress-token", response.accessToken, {
+          expires: 30,
+          path: "/",
+        });
       } else {
-        // error handling response
-        console.log("====================================");
-        console.log("error: " + res.status);
-        console.log("====================================");
+        jsCookie.set("fortress-token", response.accessToken, {
+          expires: 1,
+          path: "/",
+        });
       }
-    });
+
+      router.push("/home");
+    } else {
+    }
   };
 
   return (
@@ -110,7 +110,7 @@ const Register = () => {
             colorScheme="messenger"
             bg={COLORS["primary"]}
           >
-            login
+            Sign up
           </Button>
 
           <Box position="relative">

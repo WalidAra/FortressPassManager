@@ -30,11 +30,14 @@ const api = {
       username: string;
     }) => {
       try {
-        const response = await axios.post(`${BASE_URL.trim()}/auth/public/register`, {
-          email,
-          password,
-          username,
-        });
+         const response = await axios.post(
+           `${BASE_URL.trim()}auth/public/login`,
+           {
+             email,
+             password,
+             username,
+           }
+         );
         const data: HTTPResponseWithToken = await response.data;
         return data;
       } catch (error: any) {
